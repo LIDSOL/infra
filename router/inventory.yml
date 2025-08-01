@@ -1,0 +1,6 @@
+all:
+  children:
+    routers:
+      hosts:
+        router_01:
+          ansible_host: x.x.x.x

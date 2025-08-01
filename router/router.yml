@@ -1,0 +1,85 @@
+- name: Ansible playbook that automates router configuration
+  hosts: routers
+  become: true
+
+  tasks:
+
+# Apply basic configuration
+
+    - ansible.builtin.import_tasks: tasks/unattended-upgrades.yml
+    - ansible.builtin.import_tasks: tasks/sshd.yml
+
+# Copy /etc/netplan/armbian.yml
+
+    - name: Copy armbian.yml file
+      ansible.builtin.copy:
+        src: files/armbian.yml
+        dest: /etc/netplan/armbian.yml
+        mode: '0744'
+        owner: root
+        group: root
+
+# Copy /etc/dnsmasq/lan.conf
+
+    - name: Ensure that dnsmasq in installed
+      ansible.builtin.apt:
+        name: dnsmasq
+        state: present
+        update_cache: yes
+
+    - name: Copy lan.conf file
+      ansible.builtin.copy:
+        src: files/lan.conf
+        dest: /etc/dnsmasq/lan.conf
+        mode: '0744'
+        owner: root
+        group: root
+
+# Copy /etc/nftables.conf
+
+    - name: Ensure that nftables in installed
+      ansible.builtin.apt:
+        name: nftables
+        state: present
+        update_cache: yes
+
+    - name: Copy nftables.conf file
+      ansible.builtin.copy:
+        src: files/nftables.conf
+        dest: /etc/ntftables.conf
+        mode: '0744'
+        owner: root
+        group: root
+
+# Copy /etc/sysctl.d/99-router.conf
+
+    - name: Copy 99-router.conf file
+      ansible.builtin.copy:
+        src: files/99-router.conf
+        dest: /etc/sysctl.d/99-router.conf
+        mode: '0744'
+        owner: root
+        group: root
+
+# Start services
+
+    - name: Reload daemons
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: Start dnsmasq service
+      ansible.builtin.service:
+        name: dnsmasq.service
+        state: started
+        enabled: true
+
+    - name: Start nftables service
+      ansible.builtin.service:
+        name: nftables.service
+        state: started
+        enabled: true
+
+# Reboot machine to load armbian.yml
+
+    - name: Reboot the machine
+      ansible.builtin.reboot:
