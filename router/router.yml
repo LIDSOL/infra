@@ -61,6 +61,29 @@
       notify:
         - Apply sysctl configuration
 
+    # Configure WireGuard
+    - name: Ensure that wireguard-tools is installed
+      ansible.builtin.apt:
+        name: wireguard-tools
+        state: present
+        update_cache: yes
+    - name: Create wireguard directory
+      ansible.builtin.file:
+        path: /etc/wireguard
+        state: directory
+        mode: '0700'
+        owner: root
+        group: root
+    - name: Copy wg0.conf file
+      ansible.builtin.copy:
+        src: files/wg0.conf
+        dest: /etc/wireguard/wg0.conf
+        mode: '0600'
+        owner: root
+        group: root
+      notify:
+        - Restart wireguard
+
     # Ensure services are enabled
     - name: Ensure dnsmasq service is enabled
       ansible.builtin.service:
@@ -69,6 +92,10 @@
     - name: Ensure nftables service is enabled
       ansible.builtin.service:
         name: nftables.service
+        enabled: true
+    - name: Ensure wireguard service is enabled
+      ansible.builtin.service:
+        name: wg-quick@wg0.service
         enabled: true
 
   handlers:
@@ -79,6 +106,11 @@
     - name: Restart dnsmasq
       ansible.builtin.service:
         name: dnsmasq.service
+        state: restarted
+
+    - name: Restart wireguard
+      ansible.builtin.service:
+        name: wg-quick@wg0.service
         state: restarted
 
     - name: Restart nftables
