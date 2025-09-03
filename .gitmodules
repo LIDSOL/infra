@@ -1,0 +1,3 @@
+[submodule "cluster/k3s-ansible"]
+	path = cluster/k3s-ansible
+	url = git@github.com:timothystewart6/k3s-ansible.git
