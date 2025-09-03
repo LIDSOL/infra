@@ -1,0 +1,61 @@
+- name: Configure master nodes for lidsol's cluster
+  hosts: master
+  become: true
+  tasks:
+    - name: Ensure sudo is installed
+      ansible.builtin.package:
+        name: sudo
+        state: present
+
+    - name: Ensure lidsol user exists
+      ansible.builtin.user:
+        name: lidsol
+        state: present
+
+    - name: Ensure lidsol has passwordless sudo
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/lidsol
+        content: "lidsol ALL=(ALL) NOPASSWD:ALL\n"
+        owner: root
+        group: root
+        mode: '0440'
+
+    - name: Ensure .ssh directory exists for lidsol
+      ansible.builtin.file:
+        path: /home/lidsol/.ssh
+        state: directory
+        owner: lidsol
+        group: lidsol
+        mode: '0700'
+
+    - name: Add public key for lidsol
+      ansible.builtin.copy:
+        src: ./config/authorized_keys
+        dest: /home/lidsol/.ssh/authorized_keys
+        owner: lidsol
+        group: lidsol
+        mode: '0600'
+
+    - name: Configure sshd for public key authentication only
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+        state: present
+        backup: yes
+
+    - name: Ensure PubkeyAuthentication is enabled
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PubkeyAuthentication'
+        line: 'PubkeyAuthentication yes'
+        state: present
+        backup: yes
+
+    - name: Restart sshd
+      ansible.builtin.service:
+        name: sshd
+        state: restarted
+
+    - name: Enable unattended-upgrades
+      ansible.builtin.include_tasks: ../router/tasks/unattended-upgrades.yml
