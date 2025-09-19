@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drawdb
+  labels:
+    app: drawdb
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: drawdb
+  template:
+    metadata:
+      labels:
+        app: drawdb
+    spec:
+      containers:
+        - name: drawdb
+          image: ghcr.io/lidsol/drawdb:main
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: drawdb
+  labels:
+    app: drawdb
+spec:
+  selector:
+    app: drawdb
+  ports:
+    - name: http
+      protocol: TCP
+      port: 3000
+      targetPort: 80
+  type: LoadBalancer
+  loadBalancerIP: 10.8.24.103
