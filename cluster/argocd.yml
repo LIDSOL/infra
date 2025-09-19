@@ -1,0 +1,31 @@
+- name: Install and configure ArgoCD
+  hosts: controller
+  become: true
+  tasks:
+    - name: Create ArgoCD namespace
+      ansible.builtin.shell: kubectl create namespace argocd
+      register: create_namespace_result
+      failed_when: 
+        - create_namespace_result.rc != 0
+        - '"already exists" not in create_namespace_result.stderr'
+      changed_when: create_namespace_result.rc == 0
+
+    - name: Install ArgoCD manifests
+      ansible.builtin.shell: kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+      register: install_argocd_result
+      changed_when: '"unchanged" not in install_argocd_result.stdout'
+
+    - name: Configure ArgoCD server service as LoadBalancer
+      ansible.builtin.shell: |
+        kubectl patch svc argocd-server -n argocd -p '{
+          "spec": {
+            "type": "LoadBalancer",
+            "loadBalancerIP": "10.8.24.102",
+            "ports": [
+              {"port": 80, "targetPort": 8080, "protocol": "TCP", "name": "http"},
+              {"port": 443, "targetPort": 8080, "protocol": "TCP", "name": "https"}
+            ]
+          }
+        }'
+      register: patch_service_result
+      changed_when: '"no change" not in patch_service_result.stdout'
