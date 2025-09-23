@@ -1,0 +1,12 @@
+project: default
+source:
+  repoURL: https://github.com/LIDSOL/infra
+  path: gitops
+  targetRevision: HEAD
+destination:
+  server: https://kubernetes.default.svc
+  namespace: gitops
+syncPolicy:
+  automated:
+    prune: true
+    selfHeal: true
