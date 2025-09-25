@@ -1,0 +1,63 @@
+# Configure netplan
+- name: Copy armbian.yaml file
+  ansible.builtin.copy:
+    src: armbian.yaml
+    dest: /etc/netplan/armbian.yaml
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - Apply netplan configuration
+
+# Configure dnsmasq
+- name: Ensure that dnsmasq is installed
+  ansible.builtin.apt:
+    name: dnsmasq
+    state: present
+    update_cache: yes
+- name: Copy lan.conf file
+  ansible.builtin.copy:
+    src: lan.conf
+    dest: /etc/dnsmasq.d/lan.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - Restart dnsmasq
+
+# Configure nftables
+- name: Ensure that nftables is installed
+  ansible.builtin.apt:
+    name: nftables
+    state: present
+    update_cache: yes
+- name: Copy nftables.conf file
+  ansible.builtin.copy:
+    src: nftables.conf
+    dest: /etc/nftables.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - Restart nftables
+
+# Configure ip forwarding
+- name: Copy 99-router.conf file
+  ansible.builtin.copy:
+    src: 99-router.conf
+    dest: /etc/sysctl.d/99-router.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - Apply sysctl configuration
+
+# Ensure services are enabled
+- name: Ensure dnsmasq service is enabled
+  ansible.builtin.service:
+    name: dnsmasq.service
+    enabled: true
+- name: Ensure nftables service is enabled
+  ansible.builtin.service:
+    name: nftables.service
+    enabled: true

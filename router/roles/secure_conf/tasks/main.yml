@@ -1,0 +1,27 @@
+# Enable unattended-upgrades
+- name: Install unattended-upgrades and apt-list changes
+  ansible.builtin.apt:
+    name:
+      - unattended-upgrades
+      - apt-listchanges
+    state: present
+    update_cache: yes
+
+- name: Enable auto updates
+  ansible.builtin.shell: echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | debconf-set-selections
+
+- name: DPKG reconfigure
+  ansible.builtin.command: dpkg-reconfigure -f noninteractive unattended-upgrades
+
+# Secure configuration in /etc/ssh/ssh_config file
+- name: sshd secure configuration
+  ansible.builtin.blockinfile:
+    name: /etc/ssh/sshd_config
+    block: |
+      Port 22
+      PermitRootLogin no
+      PasswordAuthentication no
+      PubkeyAuthentication yes
+      X11Forwarding no
+    marker: "# {mark} sshd configuration"
+    insertafter: EOF

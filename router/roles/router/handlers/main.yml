@@ -1,0 +1,13 @@
+- name: Apply netplan configuration
+  ansible.builtin.command:
+    cmd: netplan apply
+
+- name: Restart dnsmasq
+  ansible.builtin.service:
+    name: dnsmasq.service
+    state: restarted
+
+- name: Restart nftables
+  ansible.builtin.service:
+    name: nftables.service
+    state: restarted
