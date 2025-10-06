@@ -1,0 +1,10 @@
+[Unit]
+Description= Keeping updated the linux mint mirror repositories
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/mintfetchRP.sh
+TimeoutStartSec=1800
+User=root
