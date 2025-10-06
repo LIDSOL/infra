@@ -15,7 +15,7 @@
 MIRROR_DIRECTORY=/srv/linux-mint
 LOCAL_MIRROR="lidsol.fi-b.unam.mx"
 MIRROR_DIRECTORY_RP=${MIRROR_DIRECTORY}/repository
-
+LATEST_UPDATE_FILE=latest_sync_repository.meta
 mkdir -p ${MIRROR_DIRECTORY_RP}
 
 MIRROR_SERVER_URL=https://mirrors.seas.harvard.edu/linuxmint-packages/
@@ -46,10 +46,10 @@ function get_upstream_time(){
 }
 
 function get_local_time() {
-    if [ -f ${MIRROR_DIRECTORY}/RP.meta ]; then
-        cat ${MIRROR_DIRECTORY}/RP.meta | head -n 1
+    if [ -f ${MIRROR_DIRECTORY}/${LATEST_UPDATE_FILE} ]; then
+        cat ${MIRROR_DIRECTORY}/${LATEST_UPDATE_FILE} | head -n 1
     else
-        echo "1970-01-01 00:00:00 UTC" >${MIRROR_DIRECTORY}/RP.meta
+        echo "1970-01-01 00:00:00 UTC" >${MIRROR_DIRECTORY}/${LATEST_UPDATE_FILE}
         echo "1970-01-01 00:00:00 UTC"
     fi
 }
@@ -92,7 +92,7 @@ if [ $(should_pull "$(get_local_time)" "$(get_upstream_time)" "$(date -u)") == "
     new_date="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
     if rsync -av --delete --partial \
       ${MAIN_SERVER_RSYNC} ${MIRROR_DIRECTORY_RP}; then
-      sed -i "1s/.*/$new_date/" ${MIRROR_DIRECTORY}/RP.meta
+      sed -i "1s/.*/$new_date/" ${MIRROR_DIRECTORY}/${LATEST_UPDATE_FILE}
     else
         echo "Error: rsync failed"
         exit 1
