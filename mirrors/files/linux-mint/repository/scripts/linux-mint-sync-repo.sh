@@ -14,7 +14,7 @@
 
 MIRROR_DIRECTORY=/srv/linux-mint
 LOCAL_MIRROR="lidsol.fi-b.unam.mx"
-MIRROR_DIRECTORY_RP=${MIRROR_DIRECTORY}/Repository
+MIRROR_DIRECTORY_RP=${MIRROR_DIRECTORY}/repository
 
 mkdir -p ${MIRROR_DIRECTORY_RP}
 

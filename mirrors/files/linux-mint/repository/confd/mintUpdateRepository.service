@@ -1,0 +1,10 @@
+[Unit]
+Description=Keeping the linux mint mirror repository up to date
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/linux-mint-sync-repo.sh
+TimeoutStartSec=1800
+User=mirrors

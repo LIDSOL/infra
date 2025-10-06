@@ -1,0 +1,10 @@
+[Unit]
+Description=Keeping the linux mint mirror images up to date
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/linux-mint-sync-images.sh
+TimeoutStartSec=7200
+User=mirrors

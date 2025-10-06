@@ -1,5 +1,5 @@
 [Unit]
-Description=Activate service for fetching changes in the linux mint mirror
+Description=Activate service for syncing changes in the linux mint mirror
 
 [Timer]
 OnCalendar=*:0/15
