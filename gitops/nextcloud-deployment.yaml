@@ -86,7 +86,7 @@ spec:
             - name: nextcloud-html
               mountPath: /var/www/html
             - name: nextcloud-data
-              mountPath: /var/www/html/data
+              mountPath: /var/www/nextcloud/data
           resources:
             requests:
               memory: "512Mi"
