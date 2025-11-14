@@ -129,6 +129,9 @@ spec:
   - hosts:
       - cloud.lidsol.unam.mx
     secretName: httpsnextcloud-tls
+  - hosts:
+      - office.lidsol.unam.mx
+    secretName: httpsoffice-tls
   rules:
   - host: cloud.lidsol.unam.mx
     http:
@@ -147,6 +150,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: collabora
+            name: nextcloud
             port:
               number: 9980
