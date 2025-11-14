@@ -1,4 +1,4 @@
-- name: Install and configure ArgoCD
+- name: Install and configure ArgoCD with Longhorn for persistent storage
   hosts: controller
   become: true
   tasks:
@@ -29,3 +29,8 @@
         }'
       register: patch_service_result
       changed_when: '"no change" not in patch_service_result.stdout'
+
+    - name: Install Longhorn
+      ansible.builtin.shell: kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.8.1/deploy/longhorn.yaml
+      register: install_longhorn_result
+      changed_when: '"unchanged" not in install_longhorn_result.stdout'
