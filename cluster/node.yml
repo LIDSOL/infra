@@ -64,3 +64,8 @@
       ansible.builtin.package:
         name: nfs-common
         state: present
+
+    - name: Install open-iscsi package
+      ansible.builtin.package:
+        name: open-iscsi
+        state: present
