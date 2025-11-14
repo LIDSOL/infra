@@ -8,8 +8,14 @@
         update_cache: yes
 
     - name: Enable auto updates
-      ansible.builtin.shell: echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | debconf-set-selections
+      ansible.builtin.debconf:
+        name: unattended-upgrades
+        question: unattended-upgrades/enable_auto_updates
+        value: 'true'
+        vtype: boolean
 
     - name: DPKG reconfigure
       ansible.builtin.command: dpkg-reconfigure -f noninteractive unattended-upgrades
+      args:
+        creates: /etc/apt/apt.conf.d/20auto-upgrades
 ...
