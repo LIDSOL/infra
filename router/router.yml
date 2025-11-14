@@ -49,6 +49,23 @@
         group: root
       notify:
         - Restart nftables
+    - name: Create systemd override directory for nftables
+      ansible.builtin.file:
+        path: /etc/systemd/system/nftables.service.d
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+    - name: Copy nftables systemd override
+      ansible.builtin.copy:
+        src: files/nftables-override.conf
+        dest: /etc/systemd/system/nftables.service.d/override.conf
+        mode: '0644'
+        owner: root
+        group: root
+      notify:
+        - Reload systemd
+        - Restart nftables
 
     # Configure ip forwarding
     - name: Copy 99-router.conf file
@@ -113,6 +130,10 @@
       ansible.builtin.service:
         name: wg-quick@wg0.service
         state: restarted
+
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
 
     - name: Restart nftables
       ansible.builtin.service:
