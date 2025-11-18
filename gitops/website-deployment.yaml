@@ -51,6 +51,7 @@ metadata:
   namespace: gitops
   annotations:
     cert-manager.io/issuer: "https-issuer"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   tls:
@@ -68,8 +69,8 @@ spec:
             name: website
             port:
               number: 8080
-      - path: /speedtest-tracker
-        pathType: Prefix
+      - path: /speedtest-tracker(/|$)(.*)
+        pathType: ImplementationSpecific
         backend:
           service:
             name: speedtest-tracker
