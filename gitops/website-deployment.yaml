@@ -68,3 +68,10 @@ spec:
             name: website
             port:
               number: 8080
+      - path: /speedtest-tracker
+        pathType: Prefix
+        backend:
+          service:
+            name: speedtest-tracker
+            port:
+              number: 80
