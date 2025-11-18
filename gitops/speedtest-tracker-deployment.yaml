@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: speedtest-tracker
+  namespace: gitops
+  labels:
+    app: speedtest-tracker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: speedtest-tracker
+  template:
+    metadata:
+      labels:
+        app: speedtest-tracker
+    spec:
+      containers:
+        - name: speedtest-tracker
+          image: lscr.io/linuxserver/speedtest-tracker:latest
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Mexico_City"
+            - name: APP_TIMEZONE
+              value: "America/Mexico_City"
+            - name: APP_KEY
+              value: "base64:XLe21gp6iAjs5wBkaSXLWwYvsaVclBgENj45G3h9iqc="
+            - name: DB_CONNECTION
+              value: "sqlite"
+            - name: SPEEDTEST_SCHEDULE
+              value: "*/5 * * * *"
+            - name: APP_URL
+              value: "http://lidsol.unam.mx/speedtest-tracker"
+            - name: ASSET_URL
+              value: "http://lidsol.unam.mx/speedtest-tracker"
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: speedtest-tracker-config
+              mountPath: /config
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+      volumes:
+        - name: speedtest-tracker-config
+          persistentVolumeClaim:
+            claimName: speedtest-tracker-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: speedtest-tracker-pvc
+  namespace: gitops
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: speedtest-tracker
+  namespace: gitops
+  labels:
+    app: speedtest-tracker
+spec:
+  selector:
+    app: speedtest-tracker
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+
