@@ -1,0 +1,51 @@
+# Ansible task file for setting up Linux Mint mirrors
+# This playbook copies necessary service and script files to the target system
+# and ensures that the corresponding systemd services and timers are enabled and started.
+---
+- name: Copy required systemd service and timer files for linux mint images mirror
+  ansible.builtin.copy:
+    src: files/linux-mint/images/confd/{{ item }}
+    dest: /etc/systemd/system/{{ item }}
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - "mintUpdateImages.service"
+    - "mintUpdateImages.timer"
+
+- name: Copy linux mint sync script for images mirror
+  ansible.builtin.copy:
+    src:  files/linux-mint/images/scripts/linux-mint-sync-images.sh
+    dest: /usr/local/bin/linux-mint-sync-images.sh
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy required systemd service and timer files for linux mint repository mirror
+  ansible.builtin.copy:
+    src: files/linux-mint/repository/confd/{{ item }}
+    dest: /etc/systemd/system/{{ item }}
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - "mintUpdateRepository.service"
+    - "mintUpdateRepository.timer"
+
+- name: Copy linux mint sync script for repository mirror
+  ansible.builtin.copy:
+    src:  files/linux-mint/repository/scripts/linux-mint-sync-repo.sh
+    dest: /usr/local/bin/linux-mint-sync-repo.sh
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Start timer service for linux mint mirrors
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+    daemon_reload: true
+  loop:
+    - "mintUpdateImages.timer"
+    - "mintUpdateRepository.timer"
