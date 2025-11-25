@@ -34,9 +34,9 @@ spec:
             - name: SPEEDTEST_SCHEDULE
               value: "*/5 * * * *"
             - name: APP_URL
-              value: "https://lidsol.unam.mx/speedtest-tracker"
+              value: "http://10.8.24.104:8080"
             - name: ASSET_URL
-              value: "https://lidsol.unam.mx/speedtest-tracker"
+              value: "http://10.8.24.104:8080"
           ports:
             - containerPort: 80
           volumeMounts:
