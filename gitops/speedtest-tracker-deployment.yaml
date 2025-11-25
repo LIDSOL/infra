@@ -74,11 +74,12 @@ metadata:
   labels:
     app: speedtest-tracker
 spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.8.24.104
   selector:
     app: speedtest-tracker
   ports:
     - name: http
       protocol: TCP
-      port: 80
+      port: 8080
       targetPort: 80
-
