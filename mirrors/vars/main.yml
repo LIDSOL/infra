@@ -4,26 +4,31 @@
 
 mirrors:
   - name: almalinux
-    path: /srv/mirrors/almalinux
+    path: /srv/almalinux
     access_log: /var/log/nginx/almalinux.access.log
     error_log: /var/log/nginx/almalinux.error.log
+    comment: AlmaLinux Mirror
 
   - name: archlinux
-    path: /srv/mirrors/archlinux
+    path: /srv/archlinux
     access_log: /var/log/nginx/archlinux.access.log
     error_log: /var/log/nginx/archlinux.error.log
+    comment: ArchLinux Mirror
 
   - name: debian
-    path: /srv/mirrors/debian
+    path: /srv/debian
     access_log: /var/log/nginx/debian.access.log
     error_log: /var/log/nginx/debian.error.log
+    comment: Debian Mirror
 
   - name: debian-cd
-    path: /srv/mirrors/debian-cd
+    path: /srv/debian-cd
     access_log: /var/log/nginx/debian-cd.access.log
     error_log: /var/log/nginx/debian-cd.error.log
+    comment: Debian-cd Mirror
 
   - name: linuxmint
-    path: /srv/mirrors/linuxmint
+    path: /srv/linuxmint
     access_log: /var/log/nginx/linuxmint.access.log
     error_log: /var/log/nginx/linuxmint.error.log
+    comment: Linux Mint Mirror

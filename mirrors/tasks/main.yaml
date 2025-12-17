@@ -30,4 +30,9 @@
   ansible.builtin.include_tasks: nginx.yaml
   tags:
     - mirrors
+
+- name: Include rsync configuration for mirrors
+  ansible.builtin.include_tasks: rsync-daemon.yaml
+  tags:
+    - mirrors
 ...

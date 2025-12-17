@@ -7,22 +7,13 @@
     group: root
     mode: "0755"
 
-- name: Deploy mirror site configurations
+- name: Deploy mirror configuration on nginx
   ansible.builtin.template:
     src: "templates/mirror.conf.jinja"
-    dest: "/etc/nginx/conf.d/{{ item.name }}.site"
+    dest: "/etc/nginx/conf.d/mirror.conf"
     owner: root
     group: root
     mode: "0644"
-  loop: "{{ mirrors }}"
   notify: reload nginx
 
-- name: Deploy main mirrors nginx configuration
-  ansible.builtin.template:
-    src: "templates/mirrors-server.conf.jinja"
-    dest: "/etc/nginx/conf.d/mirrors.conf"
-    owner: root
-    group: root
-    mode: "0644"
-  notify: reload nginx
 ...

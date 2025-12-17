@@ -14,7 +14,7 @@ server{
 
     {% for mirror in mirrors %}
         location /{{mirror.name}/} {
-            alias /srv/{{mirror.name}}/;
+            alias {{mirror.path}};
 
             # Directory listing
             autoindex on;
@@ -22,8 +22,8 @@ server{
             autoindex_localtime on;
 
             # Where Nginx will log almalinux requests
-            access_log /var/log/nginx/{{mirror.name}}.log;
-            error_log /var/log/nginx/{{mirror.name}}_error.log;
+            access_log {{mirror.access_log}};
+            error_log {{error_log}};
 
             # Browsers will cache the content for as long as possible
             expires max;

@@ -1,0 +1,12 @@
+---
+
+- name: Load configuration of rsync in daemon-mode
+  ansible.builtin.template:
+    src: "templates/rsyncd.conf.jinja"
+    dest: "/etc/rsyncd.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload rsync
+
+---

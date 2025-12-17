@@ -19,7 +19,7 @@ log file = /var/log/rsyncd.log
 {% for mirror in mirrors %}
 
 [{{mirror.name}}]
-    path = /srv/{{mirror.name}}
+    path = {{mirror.path}}
     comment = {{mirror.comment}}
 
 {% end for%}
