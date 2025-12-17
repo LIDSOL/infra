@@ -1,0 +1,10 @@
+[Unit]
+Description=Sync Debian-cd Mirror
+After=network.target
+
+[Service]
+Type=simple
+User=mirrors
+Group=mirrors
+ExecStart=/usr/bin/rsync --bwlimit=2048 --times --links --hard-links --partial --block-size=8192 --delete --archive rsync://mirrors.ocf.berkeley.edu/debian-cd/ /srv/debian-cd/
+WorkingDirectory=/home/mirrors

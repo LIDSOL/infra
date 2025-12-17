@@ -1,0 +1,9 @@
+[Unit]
+Description=Sync Almalinux Mirror
+After=network.target
+
+[Service]
+Type=simple
+User=mirrors
+Group=mirrors
+ExecStart=/usr/bin/rsync -avSH --bwlimit=2048 --exclude='.~tmp~' --delete-delay --delay-updates rsync://rsync.repo.almalinux.org/almalinux/ /srv/almalinux/

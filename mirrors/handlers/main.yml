@@ -1,0 +1,7 @@
+---
+# Handlers for mirrors role
+
+- name: reload nginx
+  ansible.builtin.systemd_service:
+    name: nginx
+    state: reloaded

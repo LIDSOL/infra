@@ -1,0 +1,26 @@
+---
+- name: Copy linux mint timer and service files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "files/SO/confd/mintUpdateSO.timer", dest: "/etc/systemd/system/mintUpdateSO.timer", mode: "0644" }
+    - { src: "files/SO/confd/mintUpdateSO.service", dest: "/etc/systemd/system/mintUpdateSO.service", mode: "0644" }
+    - { src: "files/SO/confd/scripts/mintfetchSO.sh", dest: "/usr/local/bin/mintfetchSO.sh", mode: "0755" }
+    - { src: "files/repository/confd/mintUpdateRP.timer", dest: "/etc/systemd/system/mintUpdateRP.timer", mode: "0644" }
+    - { src: "files/repository/confd/mintUpdateRP.service", dest: "/etc/systemd/system/mintUpdateRP.service", mode: "0644" }
+    - { src: "files/repository/confd/scripts/mintfetchRP.sh", dest: "/usr/local/bin/mintfetchRP.sh", mode: "0755" }
+
+- name: Start linux mint timer services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+    daemon_reload: true
+  loop:
+    - mintUpdateSO.timer
+    - mintUpdateRP.timer
+...

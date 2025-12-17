@@ -1,0 +1,19 @@
+---
+- name: Copy AlmaLinux timer and service files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "distros/AlmaLinux/repository/confd/almalinux-mirror-sync.timer", dest: "/etc/systemd/system/almalinux-mirror-sync.timer", mode: "0644" }
+    - { src: "distros/AlmaLinux/repository/confd/almalinux-mirror-sync.service", dest: "/etc/systemd/system/almalinux-mirror-sync.service", mode: "0644" }
+
+- name: Start AlmaLinux mirror timer service
+  ansible.builtin.systemd_service:
+    name: almalinux-mirror-sync.timer
+    enabled: true
+    state: started
+    daemon_reload: true
+...
