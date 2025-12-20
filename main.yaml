@@ -1,0 +1,14 @@
+---
+# Main ansible notebook
+- name: Configure mirrors infrastructure
+  hosts: all
+  become: true
+  
+  roles:
+    - mirrors
+  
+  post_tasks:
+    - name: Display mirrors configuration status
+      ansible.builtin.debug:
+        msg: "Mirrors infrastructure has been successfully configured"
+

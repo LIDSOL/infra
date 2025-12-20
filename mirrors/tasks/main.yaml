@@ -2,28 +2,42 @@
 # Main task file for mirrors role
 # This file includes all mirror configuration tasks
 
+- name: Create common directory for all mirrors
+  ansible.builtin.file:
+    path: /srv
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  tags:
+    - mirrors
+
+- name: Ensure user mirrors exists
+  ansible.builtin.user:
+    name: mirrors
+    state: present
+    system: false
+  tags:
+    - mirrors
+
 - name: Include AlmaLinux mirror configuration
   ansible.builtin.include_tasks: almalinux.yaml
   tags:
-    - mirrors
     - almalinux
 
 - name: Include ArchLinux mirror configuration
   ansible.builtin.include_tasks: archlinux.yaml
   tags:
-    - mirrors
     - archlinux
 
 - name: Include Debian mirror configuration
   ansible.builtin.include_tasks: debian.yaml
   tags:
-    - mirrors
     - debian
 
 - name: Include Linux Mint mirror configuration
   ansible.builtin.include_tasks: linux-mint.yaml
   tags:
-    - mirrors
     - linux-mint
 
 - name: Include nginx configuration for mirrors
