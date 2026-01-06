@@ -1,15 +1,6 @@
 {# This template is an nginx configuration file for
     delivering the mirror#}
     
-server{
-    server_name lidsol.fi-b.unam.mx;
-    listen 80;
-
-    location / {
-        root /var/www/html/;
-        try_files $uri $uri/ =404;
-    }
-
     {#Loop section for delivering all mirror content #}
 
     {% for mirror in mirrors %}
@@ -29,4 +20,3 @@ server{
         expires max;
     }
     {% endfor %}
-}

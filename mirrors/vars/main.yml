@@ -27,8 +27,8 @@ mirrors:
     error_log: /var/log/nginx/debian-cd.error.log
     comment: Debian-cd Mirror
 
-  - name: linuxmint
-    path: /srv/linuxmint
-    access_log: /var/log/nginx/linuxmint.access.log
-    error_log: /var/log/nginx/linuxmint.error.log
+  - name: linux-mint
+    path: /srv/linux-mint/
+    access_log: /var/log/nginx/linux-mint.access.log
+    error_log: /var/log/nginx/linux-mint.error.log
     comment: Linux Mint Mirror
