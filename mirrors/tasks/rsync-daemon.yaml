@@ -1,0 +1,21 @@
+---
+
+- name: Install rsync
+  ansible.builtin.apt:
+    name: rsync
+    state: present
+  tags:
+    - mirrors
+
+- name: Load configuration of rsync in daemon-mode
+  ansible.builtin.template:
+    src: "rsyncd.conf.j2"
+    dest: "/etc/rsyncd.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload rsync
+  tags:
+    - mirrors
+
+...

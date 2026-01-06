@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer to sync Debian-cd Mirror at random minutes each hour
+
+[Timer]
+OnCalendar=hourly
+RandomizedDelaySec=3600
+Persistent=true
+
+[Install]
+WantedBy=timers.target
