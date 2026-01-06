@@ -1,0 +1,43 @@
+# Setup nginx for http(s) services
+---
+- name: Install nginx, certbot and nginx plugin
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - nginx
+    - certbot
+    - python3-certbot-nginx
+  tags:
+    - certificate
+
+- name: Ensure nginx service is enabled and running
+  ansible.builtin.service:
+    name: nginx
+    enabled: true
+    state: started
+
+- name: Get the certificate for the domain
+  ansible.builtin.command:
+    cmd: certbot --nginx -d lidsol.fi-b.unam.mx --non-interactive --agree-tos --email lidsol-info@proton.me certonly
+    creates: /etc/letsencrypt/live/lidsol.fi-b.unam.mx/fullchain.pem
+  tags:
+    - certificate
+
+- name: Copy nginx configuration file
+  ansible.builtin.copy:
+    src: files/nginx.conf
+    dest: /etc/nginx/nginx.conf
+    mode: '0644'
+
+
+
+- name: Copy general lidsol.fi-b.unam.mx configuration file
+  ansible.builtin.copy:
+    src: files/conf.d/lidsol.fi-b.unam.mx.conf
+    dest: /etc/nginx/conf.d/lidsol.fi-b.unam.mx.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+...
