@@ -5,8 +5,19 @@
   become: true
   
   roles:
+    - role: nginx
+      tags: [nginx]
     - mirrors
-  
+    # - role: maintenance
+    #   tags: [maintenance]
+    #   tags: [mirrors]
+    # - role: prometheus
+    #   tags: [prometheus]
+    # - role: router
+    #   tags: [router]
+    # - role: tor
+    #   tags: [tor]
+
   post_tasks:
     - name: Display mirrors configuration status
       ansible.builtin.debug:
