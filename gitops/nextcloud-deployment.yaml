@@ -44,6 +44,7 @@ spec:
       containers:
         - name: nextcloud-app
           image: docker.io/library/nextcloud:31
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           volumeMounts:
@@ -60,6 +61,7 @@ spec:
               cpu: "2"
         - name: nextcloud-collabora
           image: docker.io/collabora/code:24.04.12.4.1
+          imagePullPolicy: Always
           env:
             - name: domain
               value: "cloud.lidsol.unam.mx"
@@ -78,6 +80,7 @@ spec:
               cpu: "1"
         - name: nextcloud-redis
           image: docker.io/library/redis:7
+          imagePullPolicy: Always
           ports:
             - containerPort: 6379
           resources:
