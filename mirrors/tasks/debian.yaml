@@ -1,0 +1,61 @@
+---
+- name: Create Debian mirror directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: mirrors
+    group: mirrors
+    mode: "0755"
+  loop:
+    - /srv/debian
+    - /srv/debian-cd
+  tags:
+    - debian
+
+- name: Copy ftpsync directory as /home/mirrors/
+  ansible.builtin.copy:
+    src: files/distros/Debian/repository/ftpsync/
+    dest: /home/mirrors/
+    owner: mirrors
+    group: mirrors
+    mode: '0755'
+
+- name: Copy Debian repository timer, service and script files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "distros/Debian/repository/confd/debian-mirror-sync.timer", dest: "/etc/systemd/system/debian-mirror-sync.timer", mode: "0644" }
+    - { src: "distros/Debian/repository/confd/debian-mirror-sync.service", dest: "/etc/systemd/system/debian-mirror-sync.service", mode: "0644" }
+    - { src: "distros/Debian/repository/scripts/debian-mirror-sync-check.sh", dest: "/home/mirrors/bin/debian-mirror-sync-check.sh", mode: "0755" }
+  tags:
+    - debian
+
+- name: Copy Debian ISO timer and service files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "distros/Debian/ISO/confd/debian-cd-mirror-sync.timer", dest: "/etc/systemd/system/debian-cd-mirror-sync.timer", mode: "0644" }
+    - { src: "distros/Debian/ISO/confd/debian-cd-mirror-sync.service", dest: "/etc/systemd/system/debian-cd-mirror-sync.service", mode: "0644" }
+  tags:
+    - debian
+
+- name: Start Debian mirror timer services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+    daemon_reload: true
+  loop:
+    - debian-mirror-sync.timer
+    - debian-cd-mirror-sync.timer
+  tags:
+    - debian
+...

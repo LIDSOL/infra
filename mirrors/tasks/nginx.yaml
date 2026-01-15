@@ -1,0 +1,23 @@
+---
+
+- name: Create nginx configuration directory for mirrors
+  ansible.builtin.file:
+    path: /etc/nginx/conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  tags:
+    - mirrors
+
+- name: Deploy mirror configuration on nginx
+  ansible.builtin.template:
+    src: "mirror.site.j2"
+    dest: "/etc/nginx/conf.d/mirror.site"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload nginx
+  tags:
+    - mirrors
+...

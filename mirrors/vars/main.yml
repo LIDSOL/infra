@@ -1,0 +1,34 @@
+---
+# Variables for mirrors role
+# Define mirror configurations
+
+mirrors:
+  - name: almalinux
+    path: /srv/almalinux/
+    access_log: /var/log/nginx/almalinux.access.log
+    error_log: /var/log/nginx/almalinux.error.log
+    comment: AlmaLinux Mirror
+
+  - name: archlinux
+    path: /srv/archlinux/
+    access_log: /var/log/nginx/archlinux.access.log
+    error_log: /var/log/nginx/archlinux.error.log
+    comment: ArchLinux Mirror
+
+  - name: debian
+    path: /srv/debian/
+    access_log: /var/log/nginx/debian.access.log
+    error_log: /var/log/nginx/debian.error.log
+    comment: Debian Mirror
+
+  - name: debian-cd
+    path: /srv/debian-cd/
+    access_log: /var/log/nginx/debian-cd.access.log
+    error_log: /var/log/nginx/debian-cd.error.log
+    comment: Debian-cd Mirror
+
+  - name: linux-mint
+    path: /srv/linux-mint/
+    access_log: /var/log/nginx/linux-mint.access.log
+    error_log: /var/log/nginx/linux-mint.error.log
+    comment: Linux Mint Mirror
