@@ -1,0 +1,10 @@
+[Unit]
+Description=Activate service for syncing changes in the linux mint mirror
+
+[Timer]
+OnCalendar=*:0/15
+AccuracySec=5m
+Persistent=true
+
+[Install]
+WantedBy=timers.target
