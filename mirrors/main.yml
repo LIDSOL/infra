@@ -1,0 +1,9 @@
+---
+- name: Setup mirrors server for LIDSoL
+  hosts: mirror-server
+  become: true
+
+  tasks:
+    - name: Linux Mint mirrors
+      ansible.builtin.import_tasks: tasks/linux-mint.yaml
+  
