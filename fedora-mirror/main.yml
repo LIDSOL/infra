@@ -1,0 +1,20 @@
+- name: Configure lidsol fedora public mirror
+  hosts: mirrors
+  become: true
+
+  roles: 
+    - fedora-mirror
+
+  handlers: 
+
+    - name: Reload daemons
+      ansible.builtin.systemd:
+        daemon_reload: yes
+        listen: Reload service and timer
+
+    - name: Start and enable fedora-mirror timer
+      ansible.builtin.service:
+        name: net-watchdog.timer
+        state: started
+        enabled: yes
+        listen: Reload service and timer
