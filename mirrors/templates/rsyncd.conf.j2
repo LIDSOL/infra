@@ -1,0 +1,26 @@
+# /etc/rsyncd: configuration file for rsync daemon mode
+# See rsyncd.conf man page for more options.
+
+{# Template for setting up the configuration file of rsync in daemon mode
+    so that every extern mirror can rsync our mirror#}
+
+uid = nobody
+gid = nogroup
+read only = yes
+list = yes
+
+use chroot = yes
+max connections = 10
+timeout = 900
+log file = /var/log/rsyncd.log
+
+{#Loop for configurate every mirror#}
+
+{% for mirror in mirrors %}
+
+[{{mirror.name}}]
+    path = {{mirror.path}}
+    comment = {{mirror.comment}}
+
+{% endfor%}
+

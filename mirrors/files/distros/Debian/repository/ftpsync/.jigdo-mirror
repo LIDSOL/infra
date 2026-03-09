@@ -1,0 +1,5 @@
+jigdoDir="/srv/debian-cd/current/jigdo"
+imageDir="/srv/debian-cd/current/images"
+tmpDir="/srv/debian-cd/current/images"
+debianMirror="file:/srv/debian"
+include='.'; exclude='-1\.'
