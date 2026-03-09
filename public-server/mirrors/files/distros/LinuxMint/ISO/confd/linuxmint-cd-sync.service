@@ -5,6 +5,6 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/mintfetchSO.sh
+ExecStart=/usr/local/bin/linuxmint-cd-sync.sh
 TimeoutStartSec=7200
 User=root
