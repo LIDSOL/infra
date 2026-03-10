@@ -30,6 +30,11 @@
       register: patch_service_result
       changed_when: '"no change" not in patch_service_result.stdout'
 
+    - name: Install ArgoCD Image Updater
+      ansible.builtin.shell: kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/config/install.yaml
+      register: install_image_updater_result
+      changed_when: '"unchanged" not in install_image_updater_result.stdout'
+
     - name: Install Longhorn
       ansible.builtin.shell: kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.8.1/deploy/longhorn.yaml
       register: install_longhorn_result

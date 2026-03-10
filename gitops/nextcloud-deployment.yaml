@@ -1,6 +1,19 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: nextcloud-db-pvc
+  namespace: gitops
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "longhorn"
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: nextcloud-data-pvc
   namespace: gitops
 spec:
@@ -24,6 +37,63 @@ spec:
     requests:
       storage: 15Gi
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextcloud-db
+  namespace: gitops
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: nextcloud-db
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nextcloud-db
+  namespace: gitops
+spec:
+  selector:
+    matchLabels:
+      app: nextcloud-db
+  serviceName: "nextcloud-db"
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nextcloud-db
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:11
+        imagePullPolicy: Always
+        args:
+          - "--transaction-isolation=READ-COMMITTED"
+          - "--log-bin=binlog"
+          - "--binlog-format=ROW"
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+      volumes:
+      - name: mysql-data
+        persistentVolumeClaim:
+          claimName: nextcloud-db-pvc
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -33,6 +103,8 @@ metadata:
     app: nextcloud
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: nextcloud
@@ -44,6 +116,7 @@ spec:
       containers:
         - name: nextcloud-app
           image: docker.io/library/nextcloud:31
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           volumeMounts:
@@ -60,6 +133,7 @@ spec:
               cpu: "2"
         - name: nextcloud-collabora
           image: docker.io/collabora/code:24.04.12.4.1
+          imagePullPolicy: Always
           env:
             - name: domain
               value: "cloud.lidsol.unam.mx"
@@ -78,6 +152,7 @@ spec:
               cpu: "1"
         - name: nextcloud-redis
           image: docker.io/library/redis:7
+          imagePullPolicy: Always
           ports:
             - containerPort: 6379
           resources:

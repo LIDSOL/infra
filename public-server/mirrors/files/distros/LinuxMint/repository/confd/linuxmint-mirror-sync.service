@@ -5,6 +5,6 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/mintfetchRP.sh
+ExecStart=/usr/local/bin/linuxmint-mirror-sync.sh
 TimeoutStartSec=1800
 User=root
