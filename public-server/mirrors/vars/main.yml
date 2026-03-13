@@ -27,6 +27,12 @@ mirrors:
     error_log: /var/log/nginx/debian-cd.error.log
     comment: Debian-cd Mirror
 
+  - name: fedora
+    path: /srv/fedora/
+    access_log: /var/log/nginx/fedora.access.log
+    error_log: /var/log/nginx/fedora.error.log
+    comment: Fedora Mirror
+
   - name: linux-mint
     path: /srv/linux-mint/
     access_log: /var/log/nginx/linux-mint.access.log
