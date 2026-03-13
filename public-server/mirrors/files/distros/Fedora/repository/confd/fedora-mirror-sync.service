@@ -1,0 +1,13 @@
+[Unit]
+Description=Sync the fedora project mirror
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=mirrors
+Group=mirrors
+ExecStart=/opt/fedora-mirror/quick-fedora-mirror
+
+[Install]
+WantedBy=multi-user.target

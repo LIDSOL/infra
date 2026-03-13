@@ -1,0 +1,9 @@
+[Unit]
+Description=Run Fedora mirror sync 10 mins after previos run finishes
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=10min
+
+[Install]
+WantedBy=timers.target
