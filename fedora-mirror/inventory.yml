@@ -1,4 +1,0 @@
-mirrors:
-  hosts:
-    ansible_host: lidsol.fi-b.unam.mx
-    ansible_user: lidsol
