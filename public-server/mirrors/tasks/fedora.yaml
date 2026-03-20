@@ -10,8 +10,8 @@
 
 - name: Copy configuration file
   ansible.builtin.copy:
-    src: quick-fedora-mirror.conf
-    dest: distros/Fedora/repository/quick-fedora-mirror/etc/quick-fedora-mirror.conf
+    src: mirrors/files/distros/Fedora/repository/quick-fedora-mirror/etc/quick-fedora-mirror.conf
+    dest: /etc/quick-fedora-mirror.conf
     mode: '0644'
     owner: root
     group: root

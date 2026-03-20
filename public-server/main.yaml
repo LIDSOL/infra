@@ -1,7 +1,7 @@
 ---
 # Main ansible notebook
 - name: Configure mirrors infrastructure
-  hosts: all
+  hosts: server_01
   become: true
   
   roles:
