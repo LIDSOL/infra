@@ -1,0 +1,68 @@
+#
+# quick-fedora-mirror installation
+#
+- name: Clone quick-fedora-mirror from the official repository
+  ansible.builtin.git:
+    repo: 'https://pagure.io/quick-fedora-mirror.git'
+    dest: /opt/fedora-mirror
+  tags:
+    - fedora
+
+- name: Copy configuration file
+  ansible.builtin.copy:
+    src: quick-fedora-mirror.conf
+    dest: distros/Fedora/repository/quick-fedora-mirror/etc/quick-fedora-mirror.conf
+    mode: '0644'
+    owner: root
+    group: root
+  tags:
+    - fedora
+
+#
+# Sync configuration
+#
+
+- name: Create fedora mirror directories
+  ansible.builtin.file:
+    path: /srv/fedora
+    state: directory
+    owner: mirrors
+    group: mirrors
+    mode: '0755'
+  tags:
+    - fedora
+
+- name: Create fedora mirror timefile
+  ansible.builtin.file:
+    path: /var/lib/mirror-timefile
+    state: touch
+    owner: mirrors
+    group: mirrors
+    mode: '0644'
+  tags:
+    - fedora
+
+- name: Copy fedora-mirror service and timer
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - distros/Fedora/repository/confd/fedora-mirror-sync.service
+    - distros/Fedora/repository/confd/fedora-mirror-sync.timer
+  tags:
+    - fedora
+
+- name: Start Fedora mirror timer services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+    daemon_reload: true
+  loop:
+    - fedora-mirror-sync.service
+    - fedora-mirror-sync.timer
+  tags:
+    - fedora

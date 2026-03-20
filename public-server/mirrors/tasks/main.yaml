@@ -35,6 +35,11 @@
   tags:
     - debian
 
+- name: Include Fedora mirror configuration
+  ansible.builtin.include_tasks: fedora.yaml
+  tags:
+    - fedora
+
 - name: Include Linux Mint mirror configuration
   ansible.builtin.include_tasks: linux-mint.yaml
   tags:
