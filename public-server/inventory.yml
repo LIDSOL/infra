@@ -1,8 +1,8 @@
 all:
   children:
-    routers:
+    servers:
       hosts:
-        router_01:
+        server_01:
           ansible_host: 132.248.59.73
           ansible_user: lidsol
 
