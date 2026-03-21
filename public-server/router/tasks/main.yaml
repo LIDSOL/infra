@@ -1,0 +1,168 @@
+---
+# Main task file for router role
+
+- name: Include unattended upgrades configuration
+  ansible.builtin.include_tasks: unattended-upgrades.yml
+  tags:
+    - router
+    - security
+    - unattended-upgrades
+
+- name: Include sshd configuration
+  ansible.builtin.include_tasks: sshd.yml
+  tags:
+    - router
+    - sshd
+
+- name: Configure netplan
+  ansible.builtin.copy:
+    src: files/armbian.yaml
+    dest: /etc/netplan/armbian.yaml
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - apply netplan configuration
+  tags:
+    - router
+    - netplan
+
+- name: Ensure dnsmasq is installed
+  ansible.builtin.apt:
+    name: dnsmasq
+    state: present
+    update_cache: true
+  tags:
+    - router
+    - dnsmasq
+
+- name: Configure dnsmasq
+  ansible.builtin.copy:
+    src: files/lan.conf
+    dest: /etc/dnsmasq.d/lan.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - restart dnsmasq
+  tags:
+    - router
+    - dnsmasq
+
+- name: Ensure nftables is installed
+  ansible.builtin.apt:
+    name: nftables
+    state: present
+    update_cache: true
+  tags:
+    - router
+    - nftables
+
+- name: Configure nftables base file
+  ansible.builtin.copy:
+    src: files/nftables.conf
+    dest: /etc/nftables.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - restart nftables
+  tags:
+    - router
+    - nftables
+
+- name: Create systemd override directory for nftables
+  ansible.builtin.file:
+    path: /etc/systemd/system/nftables.service.d
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+  tags:
+    - router
+    - nftables
+
+- name: Configure nftables systemd override
+  ansible.builtin.copy:
+    src: files/nftables-override.conf
+    dest: /etc/systemd/system/nftables.service.d/override.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - reload systemd
+    - restart nftables
+  tags:
+    - router
+    - nftables
+
+- name: Configure router sysctl settings
+  ansible.builtin.copy:
+    src: files/99-router.conf
+    dest: /etc/sysctl.d/99-router.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - apply sysctl configuration
+  tags:
+    - router
+    - sysctl
+
+- name: Ensure wireguard-tools is installed
+  ansible.builtin.apt:
+    name: wireguard-tools
+    state: present
+    update_cache: true
+  tags:
+    - router
+    - wireguard
+
+- name: Create WireGuard directory
+  ansible.builtin.file:
+    path: /etc/wireguard
+    state: directory
+    mode: '0700'
+    owner: root
+    group: root
+  tags:
+    - router
+    - wireguard
+
+- name: Configure WireGuard tunnel
+  ansible.builtin.copy:
+    src: files/wg0.conf
+    dest: /etc/wireguard/wg0.conf
+    mode: '0600'
+    owner: root
+    group: root
+  notify:
+    - restart wireguard
+    - restart nftables
+  tags:
+    - router
+    - wireguard
+
+- name: Ensure dnsmasq service is enabled
+  ansible.builtin.service:
+    name: dnsmasq.service
+    enabled: true
+  tags:
+    - router
+    - dnsmasq
+
+- name: Ensure nftables service is enabled
+  ansible.builtin.service:
+    name: nftables.service
+    enabled: true
+  tags:
+    - router
+    - nftables
+
+- name: Ensure WireGuard service is enabled
+  ansible.builtin.service:
+    name: wg-quick@wg0.service
+    enabled: true
+  tags:
+    - router
+    - wireguard
