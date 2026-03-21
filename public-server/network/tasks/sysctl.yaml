@@ -1,0 +1,10 @@
+---
+- name: Copy server tuning sysctl configuration
+  ansible.builtin.copy:
+    src: files/sysctl.d/99-server-tuning.conf
+    dest: /etc/sysctl.d/99-server-tuning.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - apply sysctl settings

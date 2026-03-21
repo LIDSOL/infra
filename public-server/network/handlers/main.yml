@@ -1,0 +1,18 @@
+---
+# Handlers for network role
+
+- name: apply sysctl settings
+  ansible.builtin.command:
+    cmd: sysctl --system
+
+- name: restart networking
+  ansible.builtin.systemd_service:
+    name: networking
+    state: restarted
+  async: 45
+  poll: 0
+
+- name: wait for host after networking restart
+  ansible.builtin.wait_for_connection:
+    delay: 5
+    timeout: 300

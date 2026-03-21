@@ -1,0 +1,11 @@
+---
+- name: Install irqbalance
+  ansible.builtin.apt:
+    name: irqbalance
+    state: present
+
+- name: Ensure irqbalance service is enabled and running
+  ansible.builtin.service:
+    name: irqbalance
+    enabled: true
+    state: started

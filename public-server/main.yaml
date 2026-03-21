@@ -5,6 +5,8 @@
   become: true
   
   roles:
+    - role: network
+      tags: [network]
     - role: nginx
       tags: [nginx]
     - mirrors
