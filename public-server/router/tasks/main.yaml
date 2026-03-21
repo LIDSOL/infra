@@ -1,19 +1,6 @@
 ---
 # Main task file for router role
 
-- name: Include unattended upgrades configuration
-  ansible.builtin.include_tasks: unattended-upgrades.yml
-  tags:
-    - router
-    - security
-    - unattended-upgrades
-
-- name: Include sshd configuration
-  ansible.builtin.include_tasks: sshd.yml
-  tags:
-    - router
-    - sshd
-
 - name: Configure netplan
   ansible.builtin.copy:
     src: files/armbian.yaml

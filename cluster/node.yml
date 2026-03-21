@@ -58,7 +58,7 @@
         state: restarted
 
     - name: Enable unattended-upgrades
-      ansible.builtin.include_tasks: ../public-server/router/tasks/unattended-upgrades.yml
+      ansible.builtin.include_tasks: ../public-server/security/tasks/unattended-upgrades.yml
 
     - name: Install nfs client package
       ansible.builtin.package:

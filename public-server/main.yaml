@@ -5,6 +5,8 @@
   become: true
   
   roles:
+    - role: security
+      tags: [security]
     - role: network
       tags: [network]
     - role: nginx
@@ -31,6 +33,8 @@
   become: true
 
   roles:
+    - role: security
+      tags: [security]
     - role: router
       tags: [router]
 
