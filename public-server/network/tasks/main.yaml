@@ -1,0 +1,20 @@
+---
+# Main task file for network role
+
+- name: Include irqbalance configuration
+  ansible.builtin.include_tasks: irqbalance.yaml
+  tags:
+    - network
+    - irqbalance
+
+- name: Include sysctl tuning configuration
+  ansible.builtin.include_tasks: sysctl.yaml
+  tags:
+    - network
+    - sysctl
+
+- name: Include interfaces configuration
+  ansible.builtin.include_tasks: interfaces.yaml
+  tags:
+    - network
+    - interfaces

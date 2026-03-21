@@ -1,0 +1,20 @@
+# This file describes the network interfaces available on your system
+# For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# Primary Interface (Intel IGB)
+allow-hotplug enp5s0f0
+iface enp5s0f0 inet static
+    address 132.248.59.73/24
+    gateway 132.248.59.254
+    dns-nameservers 132.248.204.1
+    dns-search fi-b.unam.mx
+    # Spoof the old MAC address to satisfy UNAM switch security
+    hwaddress ether f4:8e:38:dd:a9:a1
+    # Maximize Hardware Buffers
+    up /sbin/ethtool -G enp5s0f0 rx 4096 tx 4096
+    # Apply CAKE Smart Queue Limited to 380mbit
+    up /sbin/tc qdisc replace dev enp5s0f0 root cake bandwidth 380mbit overhead 18

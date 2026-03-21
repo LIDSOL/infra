@@ -1,0 +1,17 @@
+---
+- name: Copy network interfaces configuration
+  ansible.builtin.copy:
+    src: files/network/interfaces
+    dest: /etc/network/interfaces
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  notify:
+    - restart networking
+
+- name: Ensure networking service is enabled and running
+  ansible.builtin.service:
+    name: networking
+    enabled: true
+    state: started
