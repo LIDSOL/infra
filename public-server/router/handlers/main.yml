@@ -1,0 +1,29 @@
+---
+# Handlers for router role
+
+- name: apply netplan configuration
+  ansible.builtin.command:
+    cmd: netplan apply
+
+- name: restart dnsmasq
+  ansible.builtin.service:
+    name: dnsmasq.service
+    state: restarted
+
+- name: restart wireguard
+  ansible.builtin.service:
+    name: wg-quick@wg0.service
+    state: restarted
+
+- name: reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: restart nftables
+  ansible.builtin.service:
+    name: nftables.service
+    state: restarted
+
+- name: apply sysctl configuration
+  ansible.builtin.command:
+    cmd: sysctl --system
