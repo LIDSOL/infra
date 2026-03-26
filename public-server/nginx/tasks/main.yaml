@@ -40,4 +40,21 @@
     group: root
     mode: '0644'
 
+- name: Create /var/www/html directory
+  ansible.builtin.file:
+    path: /var/www/html
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Deploy index.html with mirrors listing
+  ansible.builtin.copy:
+    src: files/index.html
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+  notify: reload nginx
+
 ...
