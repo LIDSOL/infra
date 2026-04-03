@@ -18,6 +18,7 @@ spec:
       containers:
         - name: website
           image: ghcr.io/lidsol/sitio-web-lidsol:master
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           resources:
