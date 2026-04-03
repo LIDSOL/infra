@@ -61,8 +61,6 @@ spec:
       app: nextcloud-db
   serviceName: "nextcloud-db"
   replicas: 1
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
