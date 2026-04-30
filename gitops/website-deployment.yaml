@@ -51,7 +51,7 @@ metadata:
   name: website-ingress
   namespace: gitops
   annotations:
-    cert-manager.io/issuer: "https-issuer"
+    cert-manager.io/cluster-issuer: "https-issuer"
 spec:
   ingressClassName: traefik
   tls:
