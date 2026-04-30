@@ -86,6 +86,9 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/<NEW_VERSION>
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/<NEW_VERSION>/deploy/longhorn.yaml
 ```
+
+Also remember to update the volumes from the UI to trigger a rolling update of the CSI drivers on each node. This ensures compatibility with the new Longhorn version.
+
 *(Note: If UI pods get stuck in an `Error` state after an upgrade, force delete them with `kubectl delete pod <name> -n longhorn-system --force --grace-period=0` to spawn fresh ones).*
 
 ### D. Upgrading ArgoCD
