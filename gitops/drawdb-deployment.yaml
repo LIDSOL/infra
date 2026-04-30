@@ -53,7 +53,7 @@ metadata:
   annotations:
     cert-manager.io/issuer: "https-issuer"
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   tls:
   - hosts:
       - db.lidsol.unam.mx
