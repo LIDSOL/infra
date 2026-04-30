@@ -1,3 +1,0 @@
----
-flannel_iface: enp2s0
-k3s_node_ip: 10.8.24.42
