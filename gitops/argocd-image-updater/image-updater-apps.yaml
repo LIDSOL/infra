@@ -3,13 +3,11 @@ kind: ImageUpdater
 metadata:
   name: gitops-apps-updater
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/write-back-method: argocd
 spec:
   writeBackConfig:
-    method: git
-    gitConfig:
-      repository: git@github.com:LIDSOL/infra.git
-      branch: main
-      writeBackTarget: kustomization:./kustomization.yaml
+    method: argocd
   applicationRefs:
     - namePattern: "*"
       images:
@@ -30,7 +28,7 @@ spec:
         - alias: collabora
           imageName: docker.io/collabora/code:25.04.9.4.1
           commonUpdateSettings:
-            updateStrategy: semver
+            updateStrategy: latest
           manifestTargets:
             kustomize:
               name: docker.io/collabora/code
