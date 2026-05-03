@@ -28,7 +28,7 @@ spec:
         - alias: collabora
           imageName: docker.io/collabora/code:25.04.9.4.1
           commonUpdateSettings:
-            updateStrategy: latest
+            updateStrategy: name
           manifestTargets:
             kustomize:
               name: docker.io/collabora/code
