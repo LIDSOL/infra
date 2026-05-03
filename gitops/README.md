@@ -88,6 +88,41 @@ Cert-manager & ACME notes
 	2. Traefik VIP equals the MetalLB IP advertised to the outside network.
 	3. Ingress rules exist for the domain and return 200 for the ACME challenge path.
 
+Argo CD Image Updater (upgrade progress)
+----------------------------------------
+Current status of automated image upgrades in this repo:
+
+- Controller deployment is managed via the `gitops/argocd-image-updater/` manifests.
+- Image update rules are declared in `gitops/argocd-image-updater/image-updater-apps.yaml`
+	using the `ImageUpdater` CR.
+- Collabora strategy is configured as `latest` (was `semver`).
+- Write-back method is configured as `argocd` using:
+	`argocd-image-updater.argoproj.io/write-back-method: argocd`
+	and `spec.writeBackConfig.method: argocd`.
+
+What this means:
+- Image Updater applies parameter overrides directly through Argo CD.
+- No Git commit is required for each image bump when using `argocd` write-back mode.
+
+Image Updater verification commands
+-----------------------------------
+
+```bash
+kubectl -n argocd get imageupdater
+kubectl -n argocd describe imageupdater gitops-apps-updater
+kubectl -n argocd get pods | grep image-updater
+kubectl -n argocd logs deploy/argocd-image-updater --tail=200
+kubectl -n argocd get applications
+```
+
+Troubleshooting Image Updater
+-----------------------------
+- If images are not changing, check the updater logs first for auth/tag filtering errors.
+- Confirm image aliases and `manifestTargets.kustomize.name` match the image names used in
+	`gitops/kustomization.yaml`.
+- Ensure Argo CD has permissions to update application parameters in `argocd` write-back mode.
+- If a specific image should always move to the newest tag, use `updateStrategy: latest`.
+
 Verification commands
 ---------------------
 Apply manifests (example):
