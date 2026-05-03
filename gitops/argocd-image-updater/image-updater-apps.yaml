@@ -25,13 +25,6 @@ spec:
           manifestTargets:
             kustomize:
               name: docker.io/library/nextcloud
-        - alias: collabora
-          imageName: docker.io/collabora/code:25.04.9.4.1
-          commonUpdateSettings:
-            updateStrategy: name
-          manifestTargets:
-            kustomize:
-              name: docker.io/collabora/code
         - alias: redis
           imageName: docker.io/library/redis:7
           commonUpdateSettings:

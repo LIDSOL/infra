@@ -15,8 +15,6 @@ images:
     newTag: "11"
   - name: docker.io/library/nextcloud
     newTag: "32"
-  - name: docker.io/collabora/code
-    newTag: "25.04.9.4.1"
   - name: docker.io/library/redis
     newTag: "7"
   - name: ghcr.io/lidsol/sitio-web-lidsol
