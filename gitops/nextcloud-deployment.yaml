@@ -160,6 +160,26 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
+        - name: nextcloud-cron
+          image: docker.io/library/nextcloud:32
+          imagePullPolicy: Always
+          command:
+            - /bin/bash
+            - -lc
+          args:
+            - while true; do su -s /bin/bash www-data -c "php -f /var/www/html/cron.php"; sleep 300; done
+          volumeMounts:
+            - name: nextcloud-html
+              mountPath: /var/www/html
+            - name: nextcloud-data
+              mountPath: /var/www/nextcloud/data
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
       volumes:
         - name: nextcloud-html
           persistentVolumeClaim:
@@ -237,32 +257,3 @@ spec:
             name: nextcloud
             port:
               number: 9980
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: nextcloud-cron
-  namespace: gitops
-spec:
-  schedule: "*/5 * * * *"
-  concurrencyPolicy: Forbid
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 1
-  jobTemplate:
-    spec:
-      backoffLimit: 1
-      template:
-        spec:
-          restartPolicy: Never
-          containers:
-            - name: nextcloud-cron
-              image: docker.io/library/nextcloud:32
-              imagePullPolicy: Always
-              command:
-                - /bin/bash
-                - -lc
-              args:
-                - su -s /bin/bash www-data -c "php /var/www/html/cron.php"
-              volumeMounts:
-                - name: nextcloud-html
-                  mountPath: /var/www/html
