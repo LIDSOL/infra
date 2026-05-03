@@ -113,7 +113,7 @@ spec:
     spec:
       containers:
         - name: nextcloud-app
-          image: docker.io/library/nextcloud:31
+          image: docker.io/library/nextcloud:32
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -130,7 +130,7 @@ spec:
               memory: "4Gi"
               cpu: "2"
         - name: nextcloud-collabora
-          image: docker.io/collabora/code:24.04.12.4.1
+          image: docker.io/collabora/code:25.04.9.4.1
           imagePullPolicy: Always
           env:
             - name: domain
