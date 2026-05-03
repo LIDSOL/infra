@@ -66,6 +66,8 @@ spec:
       labels:
         app: nextcloud-db
     spec:
+      imagePullSecrets:
+        - name: dockerhub-creds
       containers:
       - name: mariadb
         image: mariadb:11
@@ -111,6 +113,8 @@ spec:
       labels:
         app: nextcloud
     spec:
+      imagePullSecrets:
+        - name: dockerhub-creds
       containers:
         - name: nextcloud-app
           image: docker.io/library/nextcloud:32
