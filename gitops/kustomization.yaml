@@ -14,7 +14,7 @@ images:
   - name: docker.io/library/mariadb
     newTag: "11"
   - name: docker.io/library/nextcloud
-    newTag: "32"
+    newTag: "33"
   - name: docker.io/library/redis
     newTag: "7"
   - name: ghcr.io/lidsol/sitio-web-lidsol

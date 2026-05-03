@@ -19,7 +19,7 @@ spec:
             kustomize:
               name: docker.io/library/mariadb
         - alias: nextcloud
-          imageName: docker.io/library/nextcloud:32
+          imageName: docker.io/library/nextcloud:33
           commonUpdateSettings:
             updateStrategy: semver
           manifestTargets:
