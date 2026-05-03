@@ -1,0 +1,5 @@
+namespace: argocd
+
+resources:
+  - github.com/argoproj-labs/argocd-image-updater/config/default?ref=stable
+  - image-updater-apps.yaml

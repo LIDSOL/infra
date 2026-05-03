@@ -1,0 +1,27 @@
+resources:
+  - argocd-ui-deployment.yaml
+  - argocd-image-updater/
+  - certmanager-deployment.yaml
+  - drawdb-deployment.yaml
+  - https-issuer-deployment.yaml
+  - longhorn-ui-deployment.yaml
+  - nextcloud-deployment.yaml
+  - speedtest-tracker-deployment.yaml
+  - traefik-service-deployment.yaml
+  - website-deployment.yaml
+
+images:
+  - name: docker.io/library/mariadb
+    newTag: "11"
+  - name: docker.io/library/nextcloud
+    newTag: "32"
+  - name: docker.io/collabora/code
+    newTag: "25.04.9.4.1"
+  - name: docker.io/library/redis
+    newTag: "7"
+  - name: ghcr.io/lidsol/sitio-web-lidsol
+    newTag: "master"
+  - name: ghcr.io/lidsol/drawdb
+    newTag: "main"
+  - name: lscr.io/linuxserver/speedtest-tracker
+    newTag: "latest"

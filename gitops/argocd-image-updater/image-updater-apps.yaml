@@ -1,0 +1,64 @@
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: gitops-apps-updater
+  namespace: argocd
+spec:
+  writeBackConfig:
+    method: git
+    gitConfig:
+      repository: git@github.com:LIDSOL/infra.git
+      branch: main
+      writeBackTarget: kustomization:./kustomization.yaml
+  applicationRefs:
+    - namePattern: "*"
+      images:
+        - alias: mariadb
+          imageName: docker.io/library/mariadb:11
+          commonUpdateSettings:
+            updateStrategy: semver
+          manifestTargets:
+            kustomize:
+              name: docker.io/library/mariadb
+        - alias: nextcloud
+          imageName: docker.io/library/nextcloud:32
+          commonUpdateSettings:
+            updateStrategy: semver
+          manifestTargets:
+            kustomize:
+              name: docker.io/library/nextcloud
+        - alias: collabora
+          imageName: docker.io/collabora/code:25.04.9.4.1
+          commonUpdateSettings:
+            updateStrategy: semver
+          manifestTargets:
+            kustomize:
+              name: docker.io/collabora/code
+        - alias: redis
+          imageName: docker.io/library/redis:7
+          commonUpdateSettings:
+            updateStrategy: semver
+          manifestTargets:
+            kustomize:
+              name: docker.io/library/redis
+        - alias: website
+          imageName: ghcr.io/lidsol/sitio-web-lidsol:master
+          commonUpdateSettings:
+            updateStrategy: digest
+          manifestTargets:
+            kustomize:
+              name: ghcr.io/lidsol/sitio-web-lidsol
+        - alias: drawdb
+          imageName: ghcr.io/lidsol/drawdb:main
+          commonUpdateSettings:
+            updateStrategy: digest
+          manifestTargets:
+            kustomize:
+              name: ghcr.io/lidsol/drawdb
+        - alias: speedtest
+          imageName: lscr.io/linuxserver/speedtest-tracker:latest
+          commonUpdateSettings:
+            updateStrategy: digest
+          manifestTargets:
+            kustomize:
+              name: lscr.io/linuxserver/speedtest-tracker
