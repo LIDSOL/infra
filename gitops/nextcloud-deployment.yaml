@@ -237,3 +237,32 @@ spec:
             name: nextcloud
             port:
               number: 9980
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nextcloud-cron
+  namespace: gitops
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: nextcloud-cron
+              image: docker.io/library/nextcloud:32
+              imagePullPolicy: Always
+              command:
+                - /bin/bash
+                - -lc
+              args:
+                - su -s /bin/bash www-data -c "php /var/www/html/cron.php"
+              volumeMounts:
+                - name: nextcloud-html
+                  mountPath: /var/www/html
