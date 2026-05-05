@@ -14,21 +14,21 @@ spec:
         - alias: mariadb
           imageName: docker.io/library/mariadb:11
           commonUpdateSettings:
-            updateStrategy: semver
+            updateStrategy: digest
           manifestTargets:
             kustomize:
               name: docker.io/library/mariadb
         - alias: nextcloud
           imageName: docker.io/library/nextcloud:33
           commonUpdateSettings:
-            updateStrategy: semver
+            updateStrategy: digest
           manifestTargets:
             kustomize:
               name: docker.io/library/nextcloud
         - alias: redis
-          imageName: docker.io/library/redis:7.2-alpine
+          imageName: docker.io/library/redis:7
           commonUpdateSettings:
-            updateStrategy: semver
+            updateStrategy: digest
           manifestTargets:
             kustomize:
               name: docker.io/library/redis
