@@ -153,7 +153,7 @@ spec:
               memory: "2Gi"
               cpu: "1"
         - name: nextcloud-redis
-          image: docker.io/library/redis:7
+          image: docker.io/library/redis:7.2-alpine
           imagePullPolicy: Always
           ports:
             - containerPort: 6379

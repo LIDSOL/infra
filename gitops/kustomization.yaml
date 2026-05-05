@@ -16,7 +16,7 @@ images:
   - name: docker.io/library/nextcloud
     newTag: "33"
   - name: docker.io/library/redis
-    newTag: "7"
+    newTag: "7.2-alpine"
   - name: ghcr.io/lidsol/sitio-web-lidsol
     newTag: "master"
   - name: ghcr.io/lidsol/drawdb
