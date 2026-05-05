@@ -26,7 +26,7 @@ spec:
             kustomize:
               name: docker.io/library/nextcloud
         - alias: redis
-          imageName: docker.io/library/redis:7
+          imageName: docker.io/library/redis:7-alpine
           commonUpdateSettings:
             updateStrategy: semver
           manifestTargets:
